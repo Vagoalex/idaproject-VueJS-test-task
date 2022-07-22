@@ -1,0 +1,75 @@
+@import './normalize.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+// font-family: 'Inter', sans-serif; 600
+@import './variables.scss';
+
+body {
+  font-family: 'Source Sans Pro', 'Roboto Condensed', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20.11px;
+  height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+
+  color: #000;
+  transition: 0.5s;
+}
+::-webkit-scrollbar {
+  width: 0;
+}
+header {
+  z-index: 15;
+}
+section {
+  z-index: 10;
+}
+footer {
+  z-index: 5;
+}
+
+.hidden {
+  display: none;
+}
+
+.wrapper {
+  max-width: 1438px;
+  margin: 0 auto;
+
+  // @media (max-width: $mediaLaptops) {
+  //   max-width: 965px;
+  // }
+  // @media (max-width: $mediaSmallDesktops) {
+  //   max-width: 650px;
+  // }
+  // @media (max-width: $mediaTablets) {
+  //   max-width: 625px;
+  // }
+  // @media (max-width: $mediaSmallTablets) {
+  //   max-width: 400px;
+  // }
+  // @media (max-width: $mediaPhones) {
+  //   max-width: 350px;
+  // }
+  // @media (max-width: $mediaSmallPhones) {
+  //   max-width: 260px;
+  // }
+}
+
+// .pulse {
+//   animation: pulse 1.5s ease-in-out 0.5s infinite;
+// }
+// @keyframes pulse {
+//   0% {
+//     opacity: 1;
+//   }
+//   50% {
+//     opacity: 0.4;
+//   }
+//   100% {
+//     opacity: 1;
+//   }
+// }
