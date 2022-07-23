@@ -1,3 +1,4 @@
-// import some from some;
+import MyButton from './MyButton.vue';
+import MyModal from './MyModal.vue';
 
-// export default [some, some2, some3];
+export default [MyButton, MyModal];
