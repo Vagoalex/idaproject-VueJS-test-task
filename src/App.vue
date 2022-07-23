@@ -1,22 +1,229 @@
 <template>
   <div class="app">
-    <card-form />
+    <my-header>
+      <div class="modal-button" :class="{ 'modal-hidden': modalVisible }">
+        <my-button @click="showModal" class="modal-button__item"
+          >Открыть форму для создания товара</my-button
+        >
+      </div>
+    </my-header>
+
+    <main class="main wrapper">
+      <my-modal v-model:show="modalVisible">
+        <card-form @create="createCard" />
+      </my-modal>
+
+      <div class="form-wrapper">
+        <card-form @create="createCard" />
+      </div>
+
+      <card-list :cards="cards" @remove="removeCard" />
+    </main>
   </div>
 </template>
 
 <script>
+import validateLink from '@/helpers/validateLink';
 import CardForm from './components/CardForm.vue';
+import MyHeader from './components/MyHeader.vue';
+import CardList from './components/CardList.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      cards: [
+        {
+          id: 1,
+          title: 'Ноутбук Asus B551LA-CN071G',
+          desk: 'Превосходно совладает и с офисными, и с мультимедийными приложениями, его явное предназначение - корпоративный сектор. Дисплей с диагональю 15,6 дюйма импонирует естественными и яркими цветами, четкой и неутомительной FHD-графикой. Основу комплектации модели образует двухъядерник Intel Core i7-4558U, органично дополненный 8 Гб оперативки',
+          link: 'https://www.pxel.ru/images/products/c987b69c17146c215bf655d59b4592aa.jpg',
+          price: '54611',
+        },
+        {
+          id: 2,
+          title: 'HUAWEI MateBook D 16',
+          desk: 'HUAWEI MateBook D 16 — это 16,1-дюймовый ультратонкий ноутбук с безрамочным экраном и процессором AMD Ryzen. Качественный легкий ноутбук с металлическим корпусом определенно стоит того, чтобы обратить на него внимание. MateBook D 16 оснащен LCD IPS-экраном с разрешением 1920×1080, поддержкой цветовой гаммы sRGB 100% (типичное значение) и яркостью 300 нит (типичное значение). Впечатляющий список характеристик дополняют полезная площадь экрана 90% и скрываемая HD-камера 720p. Ноутбук поддерживает технологию Huawei Share. MateBook D 16 с поддержкой официальных программ Microsoft Office и видео в формате 4K станет вашим умным ассистентом как в работе, так и в развлечениях.',
+          link: 'https://mobile-review.com/news/wp-content/uploads/HUAWEI-MateBook-D16.jpg',
+          price: '47999',
+        },
+        {
+          id: 3,
+          title: 'Ультрабук Honor MagicBook 16.1',
+          desk: 'Мощный ноутбук Honor MagicBook – это поразительная производительность. Благодаря шестиядерному процессору AMD Ryzen 5 5600H и интегрированной видеокарте AMD Radeon устройство подходит для 3D-рендеринга и монтажа видеороликов.',
+          link: 'https://c.dns-shop.ru/thumb/st1/fit/300/300/fc283a380d3486a2b8f65038d50be08a/f9953e222bbf5fcf015abf05acf35894359aaa4796414595ed332ea81e7d1d75.png',
+          price: '89990 ',
+        },
+        {
+          id: 4,
+          title: 'Ноутбук Acer Aspire 3 A315-23-R8WC',
+          desk: 'Если вы много времени проводите в социальных сетях или работаете удалено, то тогда вам просто необходим ноутбук ACER Aspire 3 A315-23-R8WC. Данная модель многофункциональна, практична, эргономична, а мощный процессор AMD Ryzen 5 3500U обеспечит вам высокую производительность. 256 Гб памяти хватит, чтобы устанавливать приложения и хранить личные файлы.',
+          link: 'https://cdn1.ozone.ru/s3/multimedia-e/c1200/6031291754.jpg',
+          price: '39990',
+        },
+        {
+          id: 5,
+          title: 'Ноутбук Acer Nitro 5 AN515-57-51GK',
+          desk: 'Шикарные технические характеристики.Отличное качество сборки, пластик крепкий, нигде ничего не гнется.Охлаждение. 2 вентилятора отрабатывает как надо, при игре в Cyberpunk 2077 и Crusis 3 Remastered температура процессора поднималась максимум до 89, видеокарты до 72 градусов, настройки графики — ультра. Также вы можете настраивать работу вентиляторов самостоятельно через приложение NitroSense, имеется режим СoolBoost, который повышает максимальную скорость работы вентиляторов при высоких нагрузках.',
+          link: 'https://cdn.kns.ru/linkpics/acer-nitro-5-an515-57-55uk-0-v1.jpg',
+          price: '97990',
+        },
+        {
+          id: 6,
+          title: 'Ноутбук Asus B551LA-CN071G',
+          desk: 'Превосходно совладает и с офисными, и с мультимедийными приложениями, его явное предназначение - корпоративный сектор. Дисплей с диагональю 15,6 дюйма импонирует естественными и яркими цветами, четкой и неутомительной FHD-графикой. Основу комплектации модели образует двухъядерник Intel Core i7-4558U, органично дополненный 8 Гб оперативки',
+          link: 'https://www.pxel.ru/images/products/c987b69c17146c215bf655d59b4592aa.jpg',
+          price: '54611',
+        },
+        {
+          id: 7,
+          title: 'HUAWEI MateBook D 16',
+          desk: 'HUAWEI MateBook D 16 — это 16,1-дюймовый ультратонкий ноутбук с безрамочным экраном и процессором AMD Ryzen. Качественный легкий ноутбук с металлическим корпусом определенно стоит того, чтобы обратить на него внимание. MateBook D 16 оснащен LCD IPS-экраном с разрешением 1920×1080, поддержкой цветовой гаммы sRGB 100% (типичное значение) и яркостью 300 нит (типичное значение). Впечатляющий список характеристик дополняют полезная площадь экрана 90% и скрываемая HD-камера 720p. Ноутбук поддерживает технологию Huawei Share. MateBook D 16 с поддержкой официальных программ Microsoft Office и видео в формате 4K станет вашим умным ассистентом как в работе, так и в развлечениях.',
+          link: 'https://mobile-review.com/news/wp-content/uploads/HUAWEI-MateBook-D16.jpg',
+          price: '47999',
+        },
+        {
+          id: 8,
+          title: 'Ультрабук Honor MagicBook 16.1',
+          desk: 'Мощный ноутбук Honor MagicBook – это поразительная производительность. Благодаря шестиядерному процессору AMD Ryzen 5 5600H и интегрированной видеокарте AMD Radeon устройство подходит для 3D-рендеринга и монтажа видеороликов.',
+          link: 'https://c.dns-shop.ru/thumb/st1/fit/300/300/fc283a380d3486a2b8f65038d50be08a/f9953e222bbf5fcf015abf05acf35894359aaa4796414595ed332ea81e7d1d75.png',
+          price: '89990 ',
+        },
+        {
+          id: 9,
+          title: 'Ноутбук Acer Aspire 3 A315-23-R8WC',
+          desk: 'Если вы много времени проводите в социальных сетях или работаете удалено, то тогда вам просто необходим ноутбук ACER Aspire 3 A315-23-R8WC. Данная модель многофункциональна, практична, эргономична, а мощный процессор AMD Ryzen 5 3500U обеспечит вам высокую производительность. 256 Гб памяти хватит, чтобы устанавливать приложения и хранить личные файлы.',
+          link: 'https://cdn1.ozone.ru/s3/multimedia-e/c1200/6031291754.jpg',
+          price: '39990',
+        },
+        {
+          id: 10,
+          title: 'Ноутбук Acer Nitro 5 AN515-57-51GK',
+          desk: 'Шикарные технические характеристики.Отличное качество сборки, пластик крепкий, нигде ничего не гнется.Охлаждение. 2 вентилятора отрабатывает как надо, при игре в Cyberpunk 2077 и Crusis 3 Remastered температура процессора поднималась максимум до 89, видеокарты до 72 градусов, настройки графики — ультра. Также вы можете настраивать работу вентиляторов самостоятельно через приложение NitroSense, имеется режим СoolBoost, который повышает максимальную скорость работы вентиляторов при высоких нагрузках.',
+          link: 'https://cdn.kns.ru/linkpics/acer-nitro-5-an515-57-55uk-0-v1.jpg',
+          price: '97990',
+        },
+        {
+          id: 11,
+          title: 'Ноутбук Asus B551LA-CN071G',
+          desk: 'Превосходно совладает и с офисными, и с мультимедийными приложениями, его явное предназначение - корпоративный сектор. Дисплей с диагональю 15,6 дюйма импонирует естественными и яркими цветами, четкой и неутомительной FHD-графикой. Основу комплектации модели образует двухъядерник Intel Core i7-4558U, органично дополненный 8 Гб оперативки',
+          link: 'https://www.pxel.ru/images/products/c987b69c17146c215bf655d59b4592aa.jpg',
+          price: '54611',
+        },
+        {
+          id: 12,
+          title: 'HUAWEI MateBook D 16',
+          desk: 'HUAWEI MateBook D 16 — это 16,1-дюймовый ультратонкий ноутбук с безрамочным экраном и процессором AMD Ryzen. Качественный легкий ноутбук с металлическим корпусом определенно стоит того, чтобы обратить на него внимание. MateBook D 16 оснащен LCD IPS-экраном с разрешением 1920×1080, поддержкой цветовой гаммы sRGB 100% (типичное значение) и яркостью 300 нит (типичное значение). Впечатляющий список характеристик дополняют полезная площадь экрана 90% и скрываемая HD-камера 720p. Ноутбук поддерживает технологию Huawei Share. MateBook D 16 с поддержкой официальных программ Microsoft Office и видео в формате 4K станет вашим умным ассистентом как в работе, так и в развлечениях.',
+          link: 'https://mobile-review.com/news/wp-content/uploads/HUAWEI-MateBook-D16.jpg',
+          price: '47999',
+        },
+        {
+          id: 13,
+          title: 'Ультрабук Honor MagicBook 16.1',
+          desk: 'Мощный ноутбук Honor MagicBook – это поразительная производительность. Благодаря шестиядерному процессору AMD Ryzen 5 5600H и интегрированной видеокарте AMD Radeon устройство подходит для 3D-рендеринга и монтажа видеороликов.',
+          link: 'https://c.dns-shop.ru/thumb/st1/fit/300/300/fc283a380d3486a2b8f65038d50be08a/f9953e222bbf5fcf015abf05acf35894359aaa4796414595ed332ea81e7d1d75.png',
+          price: '89990 ',
+        },
+        {
+          id: 14,
+          title: 'Ноутбук Acer Aspire 3 A315-23-R8WC',
+          desk: 'Если вы много времени проводите в социальных сетях или работаете удалено, то тогда вам просто необходим ноутбук ACER Aspire 3 A315-23-R8WC. Данная модель многофункциональна, практична, эргономична, а мощный процессор AMD Ryzen 5 3500U обеспечит вам высокую производительность. 256 Гб памяти хватит, чтобы устанавливать приложения и хранить личные файлы.',
+          link: 'https://cdn1.ozone.ru/s3/multimedia-e/c1200/6031291754.jpg',
+          price: '39990',
+        },
+        {
+          id: 15,
+          title: 'Ноутбук Acer Nitro 5 AN515-57-51GK',
+          desk: 'Шикарные технические характеристики.Отличное качество сборки, пластик крепкий, нигде ничего не гнется.Охлаждение. 2 вентилятора отрабатывает как надо, при игре в Cyberpunk 2077 и Crusis 3 Remastered температура процессора поднималась максимум до 89, видеокарты до 72 градусов, настройки графики — ультра. Также вы можете настраивать работу вентиляторов самостоятельно через приложение NitroSense, имеется режим СoolBoost, который повышает максимальную скорость работы вентиляторов при высоких нагрузках.',
+          link: 'https://cdn.kns.ru/linkpics/acer-nitro-5-an515-57-55uk-0-v1.jpg',
+          price: '97990',
+        },
+      ],
+      modalVisible: false,
+    };
   },
-  mounted() {},
-  methods: {},
-  components: { CardForm },
+  mounted() {
+    if (localStorage.getItem('cards')) {
+      try {
+        this.cards = JSON.parse(localStorage.getItem('cards'));
+      } catch (e) {
+        localStorage.removeItem('cards');
+      }
+    }
+  },
+  methods: {
+    createCard(card) {
+      // eslint-disable-next-line object-curly-newline
+      const { id, name, about, link, price } = card;
+      const validatedLink = validateLink(link);
+      const newCard = {
+        id,
+        title: name,
+        desk: about,
+        link: validatedLink,
+        price,
+      };
+
+      this.cards.push(newCard);
+      this.modalVisible = false;
+      this.setStorageCard();
+    },
+    removeCard(card) {
+      this.cards = this.cards.filter((el) => el.id !== card.id);
+      this.setStorageCard();
+    },
+    setStorageCard() {
+      const parsed = JSON.stringify(this.cards);
+      localStorage.setItem('cards', parsed);
+    },
+    showModal() {
+      this.modalVisible = true;
+    },
+  },
+  components: {
+    MyHeader,
+    CardList,
+    CardForm,
+  },
 };
 </script>
 
 <style lang="scss">
 @import 'src/style/style.scss';
+.app {
+  position: relative;
+}
+.main {
+  position: relative;
+  display: flex;
+}
+.form-wrapper {
+  @media (max-width: $mediaTablets) {
+    display: none;
+  }
+}
+
+.modal-button {
+  position: absolute;
+  top: -4px;
+  left: -300px;
+  z-index: 105;
+  visibility: hidden;
+  transition: all 0.5s ease;
+
+  z-index: 105;
+
+  &__item {
+    width: 135px;
+    height: 43px;
+  }
+
+  @media (max-width: $mediaTablets) {
+    visibility: visible;
+    left: 15px;
+  }
+}
+
+.modal-hidden {
+  display: none;
+}
 </style>
