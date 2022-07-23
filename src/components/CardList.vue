@@ -34,10 +34,12 @@ export default {
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-top: 16px;
+  width: 100%;
 
   transition: all 0.5s ease;
 
   &__title {
+    margin: 0 auto;
   }
 
   @media (max-width: $mediaSmallTablets) {
