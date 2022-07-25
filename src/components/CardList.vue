@@ -23,6 +23,7 @@ export default {
       required: true,
     },
   },
+
   components: { MyCardItem },
 };
 </script>

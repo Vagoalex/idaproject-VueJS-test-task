@@ -1,9 +1,22 @@
 <template>
   <div
     class="card"
-    @click="$emit('remove', card)"
-    @keydown="$emit('remove', card)"
+    :class="{ 'card--active': activeCard }"
+    @click="changeActiveCard"
+    @keydown="changeActiveCard"
   >
+    <div
+      @click="$emit('remove', card)"
+      @keydown="$emit('remove', card)"
+      @click.stop
+      @keydown.stop
+      class="button-remove-wrapper"
+      :class="{ 'button-remove-wrapper--active': activeCard }"
+    >
+      <button class="button-remove">
+        <span></span>
+      </button>
+    </div>
     <div class="card-image">
       <img :src="card.link" class="card-image__img" alt="some card" />
     </div>
@@ -18,10 +31,21 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      activeCard: false,
+    };
+  },
   props: {
     card: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    changeActiveCard() {
+      this.activeCard = !this.activeCard;
+      console.log(this.activeCard);
     },
   },
 };
@@ -30,6 +54,7 @@ export default {
 @import '@/style/variables.scss';
 
 .card {
+  position: relative;
   width: 331px;
   height: 410px;
   background: #fffefb;
@@ -38,15 +63,15 @@ export default {
   margin: 0px 0px 16px 16px;
   cursor: pointer;
   border: 1px solid transparent;
+  overflow: hidden;
 
   transition: all 0.5s ease;
 
-  // TODO create a delete with X button and change active class with click on card;
-  &:hover {
-    transform: scale(1.1) translateY(-15px);
+  &--active {
     border: 1px solid rgba(0, 0, 0, 0.2);
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.7);
-    z-index: 305;
+  }
+  &:hover {
   }
 
   @media (max-width: $mediaBigLaptops) {
@@ -165,5 +190,31 @@ export default {
   @media (max-width: $mediaSmallDesktops) {
     padding: 8px;
   }
+}
+
+.button-remove-wrapper {
+  position: absolute;
+  top: 0;
+  right: -45px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  padding: 0px;
+
+  &--active {
+    right: 0;
+    padding: 0px 0px 20px 20px;
+  }
+
+  &:hover .button-remove {
+    background: url('../assets/delete--hover.svg');
+  }
+}
+.button-remove {
+  background: url('../assets/delete.svg');
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.5s ease;
 }
 </style>

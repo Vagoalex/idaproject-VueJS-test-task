@@ -60,11 +60,6 @@ export default {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
   }
 
-  appearance: none;
-  background: url(@/assets/rectangle.svg) no-repeat right;
-  background-position-x: calc(100% - 8px);
-
-  padding: 10px 16px;
   &__option {
     padding: 0;
     margin: 0;
