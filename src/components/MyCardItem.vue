@@ -1,5 +1,9 @@
 <template>
-  <div class="card" @click="$emit('remove', card)" @keydown="$emit('remove', card)">
+  <div
+    class="card"
+    @click="$emit('remove', card)"
+    @keydown="$emit('remove', card)"
+  >
     <div class="card-image">
       <img :src="card.link" class="card-image__img" alt="some card" />
     </div>
@@ -29,12 +33,21 @@ export default {
   width: 331px;
   height: 410px;
   background: #fffefb;
-  box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   margin: 0px 0px 16px 16px;
   cursor: pointer;
+  border: 1px solid transparent;
 
   transition: all 0.5s ease;
+
+  // TODO create a delete with X button and change active class with click on card;
+  &:hover {
+    transform: scale(1.1) translateY(-15px);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.7);
+    z-index: 305;
+  }
 
   @media (max-width: $mediaBigLaptops) {
     width: 218px;

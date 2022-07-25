@@ -11,7 +11,11 @@
           id="form-name"
           placeholder="Введите наименование товара"
         />
-        <div class="input-error" v-for="(error, index) of v$.card.name.$errors" :key="index">
+        <div
+          class="input-error"
+          v-for="(error, index) of v$.card.name.$errors"
+          :key="index"
+        >
           <div class="input-error__msg">{{ error.$message }}</div>
         </div>
       </label>
@@ -41,7 +45,11 @@
           id="form-link"
           placeholder="Введите ссылку"
         />
-        <div class="input-error" v-for="(error, index) of v$.card.link.$errors" :key="index">
+        <div
+          class="input-error"
+          v-for="(error, index) of v$.card.link.$errors"
+          :key="index"
+        >
           <div class="input-error__msg">{{ error.$message }}</div>
         </div>
       </label>
@@ -58,7 +66,11 @@
           id="form-price"
           placeholder="Введите цену"
         />
-        <div class="input-error" v-for="(error, index) of v$.card.price.$errors" :key="index">
+        <div
+          class="input-error"
+          v-for="(error, index) of v$.card.price.$errors"
+          :key="index"
+        >
           <div class="input-error__msg">{{ error.$message }}</div>
         </div>
       </label>
@@ -138,7 +150,7 @@ export default {
   padding: 24px;
 
   background: #fffefb;
-  box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 
   transition: all 0.5s ease;
