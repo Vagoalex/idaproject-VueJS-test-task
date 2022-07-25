@@ -3,8 +3,8 @@
     <select
       class="select"
       id="select"
-      v-model="modelValue"
       @change="changeOption"
+      :value="selectedSort"
     >
       <option
         class="select__option"
@@ -19,10 +19,10 @@
 </template>
 <script>
 export default {
-  name: 'my-select',
   props: {
-    modelVale: {
+    selectedSort: {
       type: String,
+      default: 'default',
     },
     options: {
       type: Array,
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     changeOption(e) {
-      this.$emit('update:modalValue', e.target.value);
+      this.$emit('select', e.target.value);
     },
   },
 };

@@ -9,7 +9,11 @@
         </div>
         <h2 class="title">Добавление товара</h2>
         <div class="select-wrapper">
-          <my-select v-model="selectedSort" :options="sortOptions"></my-select>
+          <my-select
+            :selectedSort="selectedSort"
+            :options="sortOptions"
+            @select="changeSelect"
+          ></my-select>
         </div>
       </div>
     </header>
@@ -23,7 +27,7 @@
         <card-form @create="createCard" />
       </div>
 
-      <card-list :cards="cards" @remove="removeCard" />
+      <card-list :cards="sortedPosts" @remove="removeCard" />
     </main>
   </div>
 </template>
@@ -32,16 +36,17 @@
 import validateLink from '@/helpers/validateLink';
 import data from '@/helpers/cardData';
 import options from '@/helpers/options';
-// import sortData from '@/helpers/sortData';
-import CardForm from './components/CardForm.vue';
-import CardList from './components/CardList.vue';
+import sortData from '@/helpers/sortData';
+import MySelect from './MySelect.vue';
+import CardForm from './CardForm.vue';
+import CardList from './CardList.vue';
 
 export default {
   data() {
     return {
       cards: data,
       modalVisible: false,
-      selectedSort: '',
+      selectedSort: 'default',
       sortOptions: options,
     };
   },
@@ -54,8 +59,15 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    sortedPosts() {
+      return sortData(this.cards, this.selectedSort);
+    },
+  },
   methods: {
+    changeSelect(select) {
+      this.selectedSort = select;
+    },
     createCard(card) {
       // eslint-disable-next-line object-curly-newline
       const { id, name, about, link, price } = card;
@@ -85,6 +97,7 @@ export default {
     },
   },
   components: {
+    MySelect,
     CardList,
     CardForm,
   },

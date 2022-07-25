@@ -1,18 +1,22 @@
 /* eslint-disable no-case-declarations */
-function sortData(a, b, activeFilter) {
+function sortData(data, activeFilter) {
   switch (activeFilter) {
+    case 'default':
+      return [...data];
     case 'name':
-      const nameA = a[activeFilter].toLowerCase();
-      const nameB = b[activeFilter].toLowerCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      return 0;
+      return [...data].sort((a, b) => {
+        const nameA = a.title.toLowerCase();
+        const nameB = b.title.toLowerCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
     case 'min':
-      return a[activeFilter] - b[activeFilter];
+      return [...data].sort((a, b) => a.price - b.price);
     case 'max':
-      return b[activeFilter] - a[activeFilter];
+      return [...data].sort((a, b) => b.price - a.price);
     default:
-      throw new Error('Invalid active filter');
+      return [...data];
   }
 }
 
