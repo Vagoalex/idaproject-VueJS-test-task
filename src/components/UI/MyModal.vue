@@ -1,5 +1,10 @@
 <template>
-  <div class="modal" v-if="show" @click.stop="hideModal" @keydown.stop="hideModal">
+  <div
+    class="modal"
+    v-if="show"
+    @click.stop="hideModal"
+    @keydown.stop="hideModal"
+  >
     <div @click.stop @keydown.stop class="modal-content">
       <slot></slot>
     </div>
@@ -30,6 +35,8 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   position: fixed;
   display: flex;
+
+  z-index: 9999;
 
   .modal-content {
     margin: auto;
